@@ -1,0 +1,10 @@
+# id: readpercapture_lineplot
+# section_name: 'Fragment Distribution'
+# description: 'Coverage per capture region. (Gaussian KDE) see https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gaussian_kde.html'
+# format: 'tsv'
+# plot_type: 'linegraph'
+# pconfig:
+#    id: 'readpercapture_lineplot'
+#    title: Read per captured fragment
+#    xlab: 'Number of Reads'
+#    ylab: 'Density'

@@ -1,0 +1,11 @@
+.snakemake
+*/.snakemake
+
+config/samples.tsv
+config/units.tsv
+
+results_*/
+sra-data/
+raw-data/
+logs/
+qc/
