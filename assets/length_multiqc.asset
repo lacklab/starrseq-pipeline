@@ -1,0 +1,10 @@
+# id: length_lineplot
+# section_name: 'Fragments'
+# description: 'Fragment (properly paired mates' left- and right-most regions) length distribution. (Gaussian KDE) see https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gaussian_kde.html'
+# format: 'txt'
+# plot_type: 'linegraph'
+# pconfig:
+#    id: 'length_lineplot'
+#    title: Fragment Length Distribution
+#    xlab: 'bp'
+#    ylab: 'Count'

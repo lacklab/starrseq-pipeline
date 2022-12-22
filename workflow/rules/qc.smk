@@ -35,15 +35,43 @@ rule coverage_qc:
 	output:
 		"qc/{ref}:{raw}_coverage_mqc.txt"
 	run:
-		cov = pd.read_table(input[0], names=["Chr", "Start","End", "Cov"])
-		model = gaussian_kde(np.log10(cov["Cov"]+1))
-		x = np.arange(1,20, step=0.1)
+		cov = pd.read_table(input[0], names=["Chr", "Start","End", "Name", "Cov"])
 		with open(output[0], "w") as f:
+			model = gaussian_kde(np.log10(cov["Cov"]+1))
+			x = np.arange(1,6, step=0.1)
 			f.write(assets["coverage_qc"]+"\n")
 			for a, b in zip(x, model(x)):
 				f.write(f"{a}\t{b}\n")
+		
+import pysam
+rule ontarget_qc:
+	input:
+		"results_{ref}/coverage/{raw}.cov",
+		"results_{ref}/mapping/{raw}.final.bam"
+	output:
+		"qc/{ref}:{raw}_ontarget_mqc.txt"
+	run:
+		cov = pd.read_table(input[0], names=["Chr", "Start","End", "Name", "Cov"])
+		mapped = pysam.AlignmentFile(input[1]).mapped
+		ontarg = sum(cov['Cov'])
+		with open(output[0], "w") as f:
+			f.write(assets["ontarget_qc"]+"\n")
+			f.write(f"On-target\t{ontarg}\n")
+			f.write(f"Off-target\t{mapped - ontarg}\n")
 
-				
+rule length_qc:
+	input:
+		"results_{ref}/coverage/{raw}.bed"
+	output:
+		"qc/{ref}:{raw}_length_mqc.txt"
+	run:
+		bed = pd.read_table(input[0], names=["Chr", "Start","End", "Name"])
+		with open(output[0], "w") as f:
+			f.write(assets["length_qc"]+"\n")
+			ys, xs = np.histogram(bed["End"] - bed["Start"], bins=20)
+			for x, y in zip(xs, ys):
+				f.write(f"{x}\t{y}\n")
+
 # TODO: This can be written in a script.	
 
 rule multiqc:

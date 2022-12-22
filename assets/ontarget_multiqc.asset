@@ -1,0 +1,9 @@
+# id: ontarget_bargraph
+# section_name: 'Fragments'
+# description: 'This bargraph represent the number of paired end fragments on captured regions.'
+# format: 'txt'
+# plot_type: 'bargraph'
+# pconfig:
+#    id: 'ontarget_bar'
+#    title: On-Target Fragments Coverage
+#    ylab: 'Number of Fragments'

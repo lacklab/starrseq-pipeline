@@ -42,7 +42,6 @@ for u in units["Fastq1"].tolist() + units["Fastq2"].tolist():
 def get_fastqc(wildcards):
 	return fastqc_map[wildcards.raw]
 
-
 def get_multiqc(wildcards):
 	out = []
 	for i, row in units.iterrows():
@@ -61,6 +60,8 @@ def get_multiqc(wildcards):
 		out.append(f"qc/{ref}:{row['Name']}.final.bam_flagstat")
 		out.append(f"qc/{ref}:{row['Name']}.final.bam_stats")
 		out.append(f"qc/{ref}:{row['Name']}_coverage_mqc.txt")
+		out.append(f"qc/{ref}:{row['Name']}_ontarget_mqc.txt")
+		out.append(f"qc/{ref}:{row['Name']}_length_mqc.txt")
 	return expand(out)
 # <<< `qc.smk` <<<
 
@@ -158,11 +159,19 @@ if config["OUTPUT"]["RUN"]["COVERAGE"]:
 ]
 
 
-
-
 assets = {}
 with open("assets/coverage_multiqc.asset", "r") as f:
 	assets["coverage_qc"]	= ""
 	for line in f.readlines():
 		assets["coverage_qc"] += line
+
+with open("assets/ontarget_multiqc.asset", "r") as f:
+	assets["ontarget_qc"]	= ""
+	for line in f.readlines():
+		assets["ontarget_qc"] += line
+		
+with open("assets/length_multiqc.asset", "r") as f:
+	assets["length_qc"]	= ""
+	for line in f.readlines():
+		assets["length_qc"] += line
 		
