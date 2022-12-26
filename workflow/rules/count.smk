@@ -14,7 +14,7 @@ rule bamtobed:
 	input:
 		"results_{ref}/mapping/{raw}.ns.bam"
 	output:
-		temp("results_{ref}/coverage/{raw}.bed")
+		"results_{ref}/coverage/{raw}.bed"
 	params:
 		config["CAPTURE_REGIONS"]
 	shell:

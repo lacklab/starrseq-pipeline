@@ -2,17 +2,17 @@ rule fastqc:
 	input:
 		get_fastqc
 	output:
-		"qc/{raw}_fastqc.zip"
+		"qc/fastqc/{raw}_fastqc.zip"
 	shell:
 		"""
-		fastqc {input} -o qc
+		fastqc {input} -o qc/fastqc
 		"""
 
 rule stats:
 	input:
 		"results_{ref}/mapping/{raw}.bam"
 	output:
-		"qc/{ref}:{raw}.bam_stats"
+		"qc/stats/{ref}:{raw}"
 	shell:
 		"""
 		samtools stats {input} > {output}
@@ -22,7 +22,7 @@ rule flagstat:
 	input:
 		"results_{ref}/mapping/{raw}.bam"
 	output:
-		"qc/{ref}:{raw}.bam_flagstat"
+		"qc/flagstat/{ref}:{raw}"
 	shell:
 		"""
 		samtools flagstat {input} > {output}
@@ -33,7 +33,7 @@ rule coverage_qc:
 	input:
 		"results_{ref}/coverage/{raw}.cov"
 	output:
-		"qc/{ref}:{raw}_coverage_mqc.txt"
+		"qc/coverage/{ref}:{raw}_mqc.txt"
 	run:
 		cov = pd.read_table(input[0], names=["Chr", "Start","End", "Name", "Cov"])
 		with open(output[0], "w") as f:
@@ -43,16 +43,15 @@ rule coverage_qc:
 			for a, b in zip(x, model(x)):
 				f.write(f"{a}\t{b}\n")
 		
-import pysam
 rule ontarget_qc:
 	input:
 		"results_{ref}/coverage/{raw}.cov",
-		"results_{ref}/mapping/{raw}.final.bam"
+		"results_{ref}/coverage/{raw}.bed"
 	output:
-		"qc/{ref}:{raw}_ontarget_mqc.txt"
+		"qc/ontarget/{ref}:{raw}_mqc.txt"
 	run:
 		cov = pd.read_table(input[0], names=["Chr", "Start","End", "Name", "Cov"])
-		mapped = pysam.AlignmentFile(input[1]).mapped
+		mapped = pd.read_table(input[1], names=["Chr", "Start","End", "Name"]).shape[0]
 		ontarg = sum(cov['Cov'])
 		with open(output[0], "w") as f:
 			f.write(assets["ontarget_qc"]+"\n")
@@ -63,7 +62,7 @@ rule length_qc:
 	input:
 		"results_{ref}/coverage/{raw}.bed"
 	output:
-		"qc/{ref}:{raw}_length_mqc.txt"
+		"qc/length/{ref}:{raw}_mqc.txt"
 	run:
 		bed = pd.read_table(input[0], names=["Chr", "Start","End", "Name"])
 		with open(output[0], "w") as f:

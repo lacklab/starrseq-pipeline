@@ -1,5 +1,5 @@
 # id: readpercapture_lineplot
-# section_name: 'Fragments'
+# section_name: 'Capture Region Coverage with Fragments'
 # description: 'Coverage per capture region. (Gaussian KDE) see https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gaussian_kde.html'
 # format: 'txt'
 # plot_type: 'linegraph'

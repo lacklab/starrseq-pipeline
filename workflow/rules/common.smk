@@ -52,16 +52,16 @@ def get_multiqc(wildcards):
 			fq1 = fq1.rsplit(".", 2)[0]
 			fq2 = fq2.rsplit(".", 2)[0]
 		if lib == "Single":
-			out.append(f"qc/{fq1}_fastqc.zip")
+			out.append(f"qc/fastqc/{fq1}_fastqc.zip")
 		elif lib == "Paired":
-			out.append(f"qc/{fq1}_fastqc.zip")
-			out.append(f"qc/{fq2}_fastqc.zip")
-		out.append(f"qc/{ref}:{row['Raw']}.raw.bam_flagstat")
-		out.append(f"qc/{ref}:{row['Name']}.final.bam_flagstat")
-		out.append(f"qc/{ref}:{row['Name']}.final.bam_stats")
-		out.append(f"qc/{ref}:{row['Name']}_coverage_mqc.txt")
-		out.append(f"qc/{ref}:{row['Name']}_ontarget_mqc.txt")
-		out.append(f"qc/{ref}:{row['Name']}_length_mqc.txt")
+			out.append(f"qc/fastqc/{fq1}_fastqc.zip")
+			out.append(f"qc/fastqc/{fq2}_fastqc.zip")
+		out.append(f"qc/flagstat/{ref}:{row['Raw']}.raw")
+		out.append(f"qc/flagstat/{ref}:{row['Name']}.final")
+		out.append(f"qc/stats/{ref}:{row['Name']}.final")
+		out.append(f"qc/coverage/{ref}:{row['Name']}_mqc.txt")
+		out.append(f"qc/ontarget/{ref}:{row['Name']}_mqc.txt")
+		out.append(f"qc/length/{ref}:{row['Name']}_mqc.txt")
 	return expand(out)
 # <<< `qc.smk` <<<
 

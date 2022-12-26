@@ -44,7 +44,6 @@ rule bam_filter:
 		"""
 		samtools view {input} | egrep -v "chrM" | \
 		samtools view -b -@ {threads} -T {params} > {output}
-		samtools index -@ {threads} {output}
 		"""
 
 rule bam_merge:
